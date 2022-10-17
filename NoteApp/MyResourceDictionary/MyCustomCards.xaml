@@ -1,0 +1,70 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes">
+    <Style x:Key="NotebookCard"
+           TargetType="materialDesign:Card">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Width" Value="190"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="materialDesign:Card">
+                    <Border x:Name="border"
+                            Background="#FD7E89"
+                            Margin="5"
+                            CornerRadius="7">
+                        <Grid>
+                            <ContentPresenter x:Name="Content"
+                                              ContentSource="Content"
+                                              Margin="15"/>
+                        </Grid>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="#CCCCCC"/>
+                        </Border.Effect>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border"
+                                    Property="Background" Value="#FD7E99"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    <Style x:Key="NoteCard"
+           TargetType="materialDesign:Card">
+        <Setter Property="Foreground" Value="White"/>
+        <Setter Property="Width" Value="190"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="materialDesign:Card">
+                    <Border x:Name="border"
+                            Background="#70AF85"
+                            Margin="5"
+                            CornerRadius="7">
+                        <Grid>
+                            <ContentPresenter x:Name="Content"
+                                              ContentSource="Content"
+                                              Margin="15"/>
+                        </Grid>
+                        <Border.Effect>
+                            <DropShadowEffect BlurRadius="5" 
+                                              ShadowDepth="1" 
+                                              Direction="270"
+                                              Opacity="0.45"
+                                              RenderingBias="Performance"
+                                              Color="#CCCCCC" />
+                        </Border.Effect>
+                    </Border>
+                    
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsMouseOver" Value="True">
+                            <Setter TargetName="border"
+                                    Property="Background" Value="#70AF95"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+</ResourceDictionary>

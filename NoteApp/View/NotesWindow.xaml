@@ -1,0 +1,214 @@
+﻿<Window x:Class="NoteApp.View.NotesWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:i="http://schemas.microsoft.com/xaml/behaviors"
+        xmlns:local="clr-namespace:NoteApp.View"
+        xmlns:ViewModel="clr-namespace:NoteApp.ViewModel"
+        xmlns:UserControl="clr-namespace:NoteApp.View.UserControls"
+        xmlns:Helpers="clr-namespace:NoteApp.ViewModel.Helpers"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Title="NotesWindow" Height="600" Width="1000"
+        WindowStartupLocation="CenterScreen"
+        WindowStyle="None"
+        AllowsTransparency="True"
+        Background="Transparent">
+    <Window.Resources>
+        <ViewModel:NotesVM x:Key="NotesVM"/>
+    </Window.Resources>
+    <Grid DataContext="{StaticResource NotesVM}">
+        <!--Background-->
+        <Border Height="550" Width="950"
+                CornerRadius="20"
+                Background="#EDEDED">
+            <Border.BorderBrush>
+                <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+                    <GradientStop Color="#cbcac8" Offset="0.0" />
+                    <GradientStop Color="#c4c4c6" Offset="0.5" />
+                    <GradientStop Color="#bcbcbe" Offset="1.0" />
+                </LinearGradientBrush>
+            </Border.BorderBrush>
+            <Border.Effect>
+                <DropShadowEffect Color="Black"
+                                  Opacity="0.5"
+                                  Direction="90"
+                                  ShadowDepth="2"
+                                  BlurRadius="25"/>
+            </Border.Effect>
+        </Border>
+
+        <!--Menu Border-->
+        <Border Height="40" Width="850"
+                Background="White"
+                VerticalAlignment="Top"
+                HorizontalAlignment="Center"
+                Margin="0 75 0 0"
+                CornerRadius="10"/>
+
+        <!--Menu-->
+        <Menu Height="30" Width="830"
+              Background="Transparent"
+              VerticalAlignment="Top"
+              HorizontalAlignment="Center"
+              Margin="0 80 0 0">
+            <MenuItem Header="FILE"
+                      Height="30" Width="80"
+                      Style="{StaticResource MenuItem_With_Dropdown}">
+                <MenuItem Header="New notebook"
+                          Command="{Binding NewNotebookCommand}"
+                          Margin="0 2 0 0"
+                          Style="{StaticResource Sub_MenuItem}"
+                          Icon="{materialDesign:PackIcon Kind=BookAdd}"/>
+                <MenuItem Header="New note"
+                          Command="{Binding NewNoteCommand}"
+                          CommandParameter="{Binding SelectedNotebook}"
+                          Style="{StaticResource Sub_MenuItem}"
+                          Icon="{materialDesign:PackIcon Kind=PostItNoteAdd}"/>
+                <Separator Margin="0 0 0 0"
+                           />
+                <MenuItem Header="Exit"
+                          Click="MenuItem_Click"
+                          Style="{StaticResource Sub_MenuItem}">
+                    <MenuItem.Icon>
+                        <Image Source="../Assets/log_out.png"/>
+                    </MenuItem.Icon>
+                </MenuItem>
+
+            </MenuItem>
+        </Menu>
+
+        <ListView Height="375" Width="190"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Bottom"
+                  Margin="70 0 0 75"
+                  ItemsSource="{Binding Notebooks}"
+                  SelectedValue="{Binding SelectedNotebook}">
+
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border>
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <Grid>
+                        <UserControl:DisplayNotebook Notebook="{Binding}">
+                            <UserControl:DisplayNotebook.ContextMenu>
+                                <ContextMenu>
+                                    <MenuItem Header="Rename"
+                                              Command="{Binding Source={StaticResource NotesVM}, Path=StartEditCommand}"
+                                              Style="{StaticResource MaterialDesignMenuItem}"/>
+                                </ContextMenu>
+                            </UserControl:DisplayNotebook.ContextMenu>
+                        </UserControl:DisplayNotebook>
+                        <TextBox Text="{Binding Name, Mode=TwoWay}"
+                                 Visibility="{Binding Source={StaticResource NotesVM}, Path=IsVisible}">
+                            <i:Interaction.Triggers>
+                                <i:EventTrigger EventName="LostFocus">
+                                    <i:InvokeCommandAction Command="{Binding Source={StaticResource NotesVM}, Path=EndEditCommand}"
+                                                           CommandParameter="{Binding}"/>
+                                </i:EventTrigger>
+                            </i:Interaction.Triggers>
+                        </TextBox>
+                    </Grid>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ListView Height="375" Width="190"
+                  HorizontalAlignment="Left"
+                  VerticalAlignment="Bottom"
+                  Margin="290 0 0 75"
+                  ItemsSource="{Binding Notes}" d:ItemsSource="{d:SampleData ItemCount=5}"
+                  SelectedValue="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+            <ListView.ItemContainerStyle>
+                <Style TargetType="{x:Type ListViewItem}">
+                    <Setter Property="Template">
+                        <Setter.Value>
+                            <ControlTemplate TargetType="{x:Type ListViewItem}">
+                                <Border>
+                                    <ContentPresenter HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}" VerticalAlignment="{TemplateBinding VerticalContentAlignment}"/>
+                                </Border>
+                            </ControlTemplate>
+                        </Setter.Value>
+                    </Setter>
+                </Style>
+            </ListView.ItemContainerStyle>
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <UserControl:DisplayNote Note="{Binding}"/>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+
+        <ToolBarTray Width="410"
+                     HorizontalAlignment="Right"
+                     VerticalAlignment="Top"
+                     Margin="0 150 75 0">
+
+            <ToolBar Margin="0 5"
+                     Width="410">
+
+                <ToggleButton x:Name="BoldButton"
+                              Content="{materialDesign:PackIcon Kind=FormatBold}"
+                              Style="{StaticResource FormatFontToggleButton}"
+                              Click="BoldButton_Click"/>
+
+                <ToggleButton x:Name="ItalicButton"
+                              Content="{materialDesign:PackIcon Kind=FormatItalic}"
+                              Style="{StaticResource FormatFontToggleButton}"
+                              Margin="3 0"
+                              Click="ItalicButton_Click"/>
+
+                <ToggleButton x:Name="UnderlineButton"
+                              Content="{materialDesign:PackIcon Kind=FormatUnderline}"
+                              Style="{StaticResource FormatFontToggleButton}"
+                              Click="UnderlineButton_Click"/>
+                <Button Content="{materialDesign:PackIcon Kind=ContentSave}"
+                        Style="{StaticResource MaterialDesignFlatLightButton}"
+                        Foreground="Black"
+                        Opacity="0.7"
+                        Click="SaveButton_Click"/>
+            </ToolBar>
+        </ToolBarTray>
+
+        <Border Height="315" Width="410"
+                HorizontalAlignment="Right"
+                VerticalAlignment="Bottom"
+                Margin="0 0 75 75"
+                Background="#F6E6CB"
+                CornerRadius="10">
+            <Border.Effect>
+                <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="#CCCCCC"/>
+            </Border.Effect>
+            <StackPanel>
+                <RichTextBox x:Name="contentRichTextBox" 
+                             Height="260" 
+                             Margin="25 25 25 5"
+                             FontFamily="Segoe UI"
+                             FontSize="16"
+                             TextChanged="RichTextBox_TextChanged"
+                             Background="#F6E6CB"
+                             BorderThickness="0"
+                             SelectionChanged="ContentRichTextBox_SelectionChanged"
+                             Style="{StaticResource StyleForRichTextBox}"/>
+                <TextBlock x:Name="statusTextBlock"
+                           Margin="25 0"
+                           HorizontalAlignment="Right"/>
+            </StackPanel>
+
+
+        </Border>
+    </Grid>
+</Window>
