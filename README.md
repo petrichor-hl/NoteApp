@@ -14,7 +14,7 @@ Do you know who I am referring to in this app?
 
 ## Screenshots
 <p align="center">
-    <img src="screenshots/01.png" width="90%" vspace=10 hspace=10/>
+    <img src="screenshots/01.PNG" width="90%" vspace=10 hspace=10/>
 </p>
 
 [0]: https://material.io/develop
