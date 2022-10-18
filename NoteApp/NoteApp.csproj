@@ -73,12 +73,17 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="ViewModel\Command\CloseAppCommand.cs" />
     <Compile Include="ViewModel\Command\EditCommand\StartEditCommand.cs" />
     <Compile Include="ViewModel\Command\EditCommand\EndEditCommand.cs" />
+    <Compile Include="ViewModel\Command\FormatFontRTB\BoldCommand.cs" />
+    <Compile Include="ViewModel\Command\FormatFontRTB\ItalicCommand.cs" />
+    <Compile Include="ViewModel\Command\FormatFontRTB\UnderlineCommand.cs" />
     <Compile Include="ViewModel\Command\LoginCommand.cs" />
     <Compile Include="ViewModel\Command\NewNotebookCommand.cs" />
     <Compile Include="ViewModel\Command\NewNoteCommand.cs" />
     <Compile Include="ViewModel\Command\RegisterCommand.cs" />
+    <Compile Include="ViewModel\Command\SaveCommand.cs" />
     <Compile Include="ViewModel\Helpers\DatabaseHelper.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\NotesVM.cs" />

@@ -10,11 +10,14 @@
         xmlns:Helpers="clr-namespace:NoteApp.ViewModel.Helpers"
         xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
         mc:Ignorable="d"
-        Title="NotesWindow" Height="600" Width="1000"
+        Title="NotesWindow" 
+        x:Name="NotesScreen"
+        Height="600" Width="1000"
         WindowStartupLocation="CenterScreen"
         WindowStyle="None"
         AllowsTransparency="True"
         Background="Transparent">
+    
     <Window.Resources>
         <ViewModel:NotesVM x:Key="NotesVM"/>
     </Window.Resources>
@@ -69,7 +72,9 @@
                 <Separator Margin="0 0 0 0"
                            />
                 <MenuItem Header="Exit"
-                          Click="MenuItem_Click"
+                          Command="{Binding CloseAppCommand}"
+                          CommandParameter="{Binding ElementName=NotesScreen}"
+                          
                           Style="{StaticResource Sub_MenuItem}">
                     <MenuItem.Icon>
                         <Image Source="../Assets/log_out.png"/>
@@ -163,23 +168,27 @@
                 <ToggleButton x:Name="BoldButton"
                               Content="{materialDesign:PackIcon Kind=FormatBold}"
                               Style="{StaticResource FormatFontToggleButton}"
-                              Click="BoldButton_Click"/>
+                              Command="{Binding BoldCommand}"
+                              CommandParameter="{Binding ElementName=NotesScreen}"/>
 
                 <ToggleButton x:Name="ItalicButton"
                               Content="{materialDesign:PackIcon Kind=FormatItalic}"
                               Style="{StaticResource FormatFontToggleButton}"
                               Margin="3 0"
-                              Click="ItalicButton_Click"/>
+                              Command="{Binding ItalicCommand}"
+                              CommandParameter="{Binding ElementName=NotesScreen}"/>
 
                 <ToggleButton x:Name="UnderlineButton"
                               Content="{materialDesign:PackIcon Kind=FormatUnderline}"
                               Style="{StaticResource FormatFontToggleButton}"
-                              Click="UnderlineButton_Click"/>
+                              Command="{Binding UnderlineCommand}"
+                              CommandParameter="{Binding ElementName=NotesScreen}"/>
                 <Button Content="{materialDesign:PackIcon Kind=ContentSave}"
                         Style="{StaticResource MaterialDesignFlatLightButton}"
                         Foreground="Black"
                         Opacity="0.7"
-                        Click="SaveButton_Click"/>
+                        Command="{Binding SaveCommand}"
+                        CommandParameter="{Binding ElementName=NotesScreen}"/>
             </ToolBar>
         </ToolBarTray>
 

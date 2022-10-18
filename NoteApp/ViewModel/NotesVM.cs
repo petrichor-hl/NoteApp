@@ -1,15 +1,19 @@
 ﻿using NoteApp.Model;
+using NoteApp.View;
 using NoteApp.ViewModel.Command;
 using NoteApp.ViewModel.Command.EditCommand;
+using NoteApp.ViewModel.Command.FormatFontRTB;
 using NoteApp.ViewModel.Helpers;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
+using System.Windows.Controls;
 using System.Windows.Documents;
 
 namespace NoteApp.ViewModel
@@ -70,7 +74,15 @@ namespace NoteApp.ViewModel
 
         public EndEditCommand EndEditCommand { get; set; }
 
-        public event PropertyChangedEventHandler PropertyChanged;
+        public CloseAppCommand CloseAppCommand { get; set; }
+
+        public BoldCommand BoldCommand { get; set; }
+
+        public UnderlineCommand UnderlineCommand { get; set; }
+
+        public ItalicCommand ItalicCommand { get; set; }
+
+        public SaveCommand SaveCommand { get; set; }
 
         public event EventHandler SelectedNoteChanged;
 
@@ -83,6 +95,11 @@ namespace NoteApp.ViewModel
             NewNoteCommand = new NewNoteCommand(this);
             StartEditCommand = new StartEditCommand(this);
             EndEditCommand = new EndEditCommand(this);
+            CloseAppCommand = new CloseAppCommand();
+            BoldCommand = new BoldCommand();
+            ItalicCommand = new ItalicCommand();
+            UnderlineCommand = new UnderlineCommand();
+            SaveCommand = new SaveCommand(this);
 
             IsVisible = Visibility.Collapsed;
 
@@ -150,6 +167,20 @@ namespace NoteApp.ViewModel
             DatabaseHelper.Update(notebook);
             GetNotebooks();
         }
+
+        public void SaveRTB(NotesWindow notesWindow)
+        {
+            var content = new TextRange(notesWindow.contentRichTextBox.Document.ContentStart, notesWindow.contentRichTextBox.Document.ContentEnd);
+
+            string filePath = string.Format(@"../../NoteFiles/{0}_{1}.rtf", SelectedNote.NoteId, SelectedNote.Title);
+            var fs = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
+            content.Save(fs, DataFormats.Rtf);
+
+            SelectedNote.FileLocation = filePath;
+            DatabaseHelper.Update(SelectedNote);
+        }
+
+        public event PropertyChangedEventHandler PropertyChanged;
 
         void OnPropertyChanged(string propertyName)
         {

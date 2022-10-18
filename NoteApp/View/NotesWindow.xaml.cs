@@ -45,42 +45,6 @@ namespace NoteApp.View
             }
         }
 
-        private void MenuItem_Click(object sender, RoutedEventArgs e)
-        {
-            Application.Current.Shutdown();
-        }
-
-        private void BoldButton_Click(object sender, RoutedEventArgs e)
-        {
-            bool isButtonChecked = BoldButton.IsChecked ?? false;
-            if (isButtonChecked)
-                contentRichTextBox.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Bold);
-            else
-                contentRichTextBox.Selection.ApplyPropertyValue(FontWeightProperty, FontWeights.Normal);
-        }
-
-        private void ItalicButton_Click(object sender, RoutedEventArgs e)
-        {
-            bool isButtonChecked = ItalicButton.IsChecked ?? false;
-            if (isButtonChecked)
-                contentRichTextBox.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Italic);
-            else
-                contentRichTextBox.Selection.ApplyPropertyValue(FontStyleProperty, FontStyles.Normal);
-        }
-
-        private void UnderlineButton_Click(object sender, RoutedEventArgs e)
-        {
-            bool isButtonChecked = UnderlineButton.IsChecked ?? false;
-            if (isButtonChecked)
-                contentRichTextBox.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, TextDecorations.Underline);
-            else
-            {
-                TextDecorationCollection textDecorations;
-                (contentRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty) as TextDecorationCollection).TryRemove(TextDecorations.Underline, out textDecorations);
-                contentRichTextBox.Selection.ApplyPropertyValue(Inline.TextDecorationsProperty, textDecorations);
-            }
-        }
-
         private void RichTextBox_TextChanged(object sender, RoutedEventArgs e)
         {
             int amountCharacter = (new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd)).Text.TrimEnd().Length;
@@ -96,19 +60,8 @@ namespace NoteApp.View
             ItalicButton.IsChecked = selectedStyle != DependencyProperty.UnsetValue && selectedStyle.Equals(FontStyles.Italic);
 
             var selectedDecoration = contentRichTextBox.Selection.GetPropertyValue(Inline.TextDecorationsProperty);
-            UnderlineButton.IsChecked = selectedStyle != DependencyProperty.UnsetValue && selectedDecoration.Equals(TextDecorations.Underline);
+            UnderlineButton.IsChecked = selectedDecoration != DependencyProperty.UnsetValue && selectedDecoration.Equals(TextDecorations.Underline);
         }
 
-        private void SaveButton_Click(object sender, RoutedEventArgs e)
-        {
-            var content = new TextRange(contentRichTextBox.Document.ContentStart, contentRichTextBox.Document.ContentEnd);
-
-            string filePath = string.Format(@"../../NoteFiles/{0}_{1}.rtf", notesVM.SelectedNote.NoteId, notesVM.SelectedNote.Title);
-            var fs = new FileStream(filePath, FileMode.Create, FileAccess.ReadWrite);
-            content.Save(fs, DataFormats.Rtf);
-
-            notesVM.SelectedNote.FileLocation = filePath;
-            DatabaseHelper.Update(notesVM.SelectedNote);
-        }
     }
 }
