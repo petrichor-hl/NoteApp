@@ -9,7 +9,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="materialDesign:Card">
                     <Border x:Name="border"
-                            Background="#FD7E89"
+                            Background="#fc3345"
                             Margin="5"
                             CornerRadius="7">
                         <Grid>
@@ -24,7 +24,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border"
-                                    Property="Background" Value="#FD7E99"/>
+                                    Property="Background" Value="#FD7E89"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
@@ -39,7 +39,7 @@
             <Setter.Value>
                 <ControlTemplate TargetType="materialDesign:Card">
                     <Border x:Name="border"
-                            Background="#70AF85"
+                            Background="#529368"
                             Margin="5"
                             CornerRadius="7">
                         <Grid>
@@ -60,7 +60,7 @@
                     <ControlTemplate.Triggers>
                         <Trigger Property="IsMouseOver" Value="True">
                             <Setter TargetName="border"
-                                    Property="Background" Value="#70AF95"/>
+                                    Property="Background" Value="#70AF85"/>
                         </Trigger>
                     </ControlTemplate.Triggers>
                 </ControlTemplate>

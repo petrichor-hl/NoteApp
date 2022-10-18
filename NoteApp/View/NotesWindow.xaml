@@ -187,7 +187,7 @@
                 HorizontalAlignment="Right"
                 VerticalAlignment="Bottom"
                 Margin="0 0 75 75"
-                Background="#F6E6CB"
+                Background="#e9c17e"
                 CornerRadius="10">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="5" ShadowDepth="1" Direction="270" Color="#CCCCCC"/>
@@ -199,7 +199,7 @@
                              FontFamily="Segoe UI"
                              FontSize="16"
                              TextChanged="RichTextBox_TextChanged"
-                             Background="#F6E6CB"
+                             Background="#e9c17e"
                              BorderThickness="0"
                              SelectionChanged="ContentRichTextBox_SelectionChanged"
                              Style="{StaticResource StyleForRichTextBox}"/>
