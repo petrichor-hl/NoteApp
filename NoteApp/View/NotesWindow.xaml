@@ -117,6 +117,8 @@
                                 </ContextMenu>
                             </UserControl:DisplayNotebook.ContextMenu>
                         </UserControl:DisplayNotebook>
+                        
+                        
                         <TextBox Text="{Binding Name, Mode=TwoWay}"
                                  Visibility="{Binding Source={StaticResource NotesVM}, Path=IsVisible}">
                             <i:Interaction.Triggers>
@@ -126,6 +128,8 @@
                                 </i:EventTrigger>
                             </i:Interaction.Triggers>
                         </TextBox>
+                        
+                        
                     </Grid>
                 </DataTemplate>
             </ListView.ItemTemplate>
@@ -136,7 +140,7 @@
                   VerticalAlignment="Bottom"
                   Margin="290 0 0 75"
                   ItemsSource="{Binding Notes}" d:ItemsSource="{d:SampleData ItemCount=5}"
-                  SelectedValue="{Binding SelectedNote, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}">
+                  SelectedValue="{Binding SelectedNote, Mode=OneWayToSource, UpdateSourceTrigger=PropertyChanged}">
             <ListView.ItemContainerStyle>
                 <Style TargetType="{x:Type ListViewItem}">
                     <Setter Property="Template">
@@ -155,6 +159,12 @@
                     <UserControl:DisplayNote Note="{Binding}"/>
                 </DataTemplate>
             </ListView.ItemTemplate>
+            <i:Interaction.Triggers>
+                <i:EventTrigger EventName="SelectionChanged">
+                    <i:InvokeCommandAction Command="{Binding Source={StaticResource NotesVM}, Path=SelectedNoteChanged}"
+                                           CommandParameter="{Binding ElementName=contentRichTextBox}"/>
+                </i:EventTrigger>
+            </i:Interaction.Triggers>
         </ListView>
 
         <ToolBarTray Width="410"
@@ -207,11 +217,21 @@
                              Margin="25 25 25 5"
                              FontFamily="Segoe UI"
                              FontSize="16"
-                             TextChanged="RichTextBox_TextChanged"
                              Background="#e9c17e"
                              BorderThickness="0"
-                             SelectionChanged="ContentRichTextBox_SelectionChanged"
-                             Style="{StaticResource StyleForRichTextBox}"/>
+                             Style="{StaticResource StyleForRichTextBox}">
+                    <i:Interaction.Triggers>
+                        <i:EventTrigger EventName="TextChanged">
+                            <i:InvokeCommandAction Command="{Binding Source={StaticResource NotesVM}, Path=TextChangedRTB}"
+                                                   CommandParameter="{Binding ElementName=NotesScreen}"/>
+
+                        </i:EventTrigger>
+                        <i:EventTrigger EventName="SelectionChanged">
+                            <i:InvokeCommandAction Command="{Binding Source={StaticResource NotesVM}, Path=SelectionChangedRTB}"
+                                                   CommandParameter="{Binding ElementName=NotesScreen}"/>
+                        </i:EventTrigger>
+                    </i:Interaction.Triggers>
+                </RichTextBox>
                 <TextBlock x:Name="statusTextBlock"
                            Margin="25 0"
                            HorizontalAlignment="Right"/>

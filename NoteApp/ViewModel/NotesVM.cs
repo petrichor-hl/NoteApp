@@ -3,6 +3,7 @@ using NoteApp.View;
 using NoteApp.ViewModel.Command;
 using NoteApp.ViewModel.Command.EditCommand;
 using NoteApp.ViewModel.Command.FormatFontRTB;
+using NoteApp.ViewModel.Command.RTBCommand;
 using NoteApp.ViewModel.Helpers;
 using System;
 using System.Collections.Generic;
@@ -48,7 +49,7 @@ namespace NoteApp.ViewModel
             { 
                 selectedNote = value;
                 OnPropertyChanged("SelectedNote");
-                SelectedNoteChanged?.Invoke(this, new EventArgs());
+                // SelectedNoteChanged?.Invoke(this, new EventArgs());
             }
         }
 
@@ -84,7 +85,13 @@ namespace NoteApp.ViewModel
 
         public SaveCommand SaveCommand { get; set; }
 
-        public event EventHandler SelectedNoteChanged;
+        public TextChangedRTB TextChangedRTB { get; set; }
+
+        public SelectionChangedRTB SelectionChangedRTB { get; set; }
+
+        public SelectedNoteChanged SelectedNoteChanged { get; set; }
+
+        // public event EventHandler SelectedNoteChanged;
 
         public NotesVM()
         {
@@ -100,6 +107,9 @@ namespace NoteApp.ViewModel
             ItalicCommand = new ItalicCommand();
             UnderlineCommand = new UnderlineCommand();
             SaveCommand = new SaveCommand(this);
+            TextChangedRTB = new TextChangedRTB();
+            SelectionChangedRTB = new SelectionChangedRTB();
+            SelectedNoteChanged = new SelectedNoteChanged(this);
 
             IsVisible = Visibility.Collapsed;
 
@@ -178,6 +188,19 @@ namespace NoteApp.ViewModel
 
             SelectedNote.FileLocation = filePath;
             DatabaseHelper.Update(SelectedNote);
+        }
+
+        public void FetchNoteDataToContentRTB(RichTextBox richTextBox)
+        {
+            if (SelectedNote != null)
+            {
+                if (SelectedNote.FileLocation != "Unknow")
+                {
+                    var fs = new FileStream(SelectedNote.FileLocation, FileMode.Open, FileAccess.Read);
+                    var content = new TextRange(richTextBox.Document.ContentStart, richTextBox.Document.ContentEnd);
+                    content.Load(fs, DataFormats.Rtf);
+                }
+            }
         }
 
         public event PropertyChangedEventHandler PropertyChanged;

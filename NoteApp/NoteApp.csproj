@@ -83,7 +83,10 @@
     <Compile Include="ViewModel\Command\NewNotebookCommand.cs" />
     <Compile Include="ViewModel\Command\NewNoteCommand.cs" />
     <Compile Include="ViewModel\Command\RegisterCommand.cs" />
+    <Compile Include="ViewModel\Command\RTBCommand\SelectedNoteChanged.cs" />
+    <Compile Include="ViewModel\Command\RTBCommand\SelectionChangedRTB.cs" />
     <Compile Include="ViewModel\Command\SaveCommand.cs" />
+    <Compile Include="ViewModel\Command\RTBCommand\TextChangedRTB.cs" />
     <Compile Include="ViewModel\Helpers\DatabaseHelper.cs" />
     <Compile Include="ViewModel\LoginVM.cs" />
     <Compile Include="ViewModel\NotesVM.cs" />
